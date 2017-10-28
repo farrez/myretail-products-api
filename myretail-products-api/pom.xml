@@ -132,6 +132,14 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmArguments>
+                        -Dcatalina.base=/tmp
+                    </jvmArguments>
+                    <additionalProperties>
+                        <build.number>${buildNumber}</build.number>
+                    </additionalProperties>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

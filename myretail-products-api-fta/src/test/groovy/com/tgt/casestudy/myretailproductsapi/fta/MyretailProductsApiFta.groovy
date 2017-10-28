@@ -1,35 +1,30 @@
 package com.tgt.casestudy.myretailproductsapi.fta
 
-import org.springframework.boot.builder.SpringApplicationBuilder
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.web.client.RestTemplate
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import spock.lang.Specification
 
-import javax.annotation.Resource
-
-@ContextConfiguration(classes = [MyretailProductsApiFta])
-@ComponentScan(value = 'com.tgt.casestudy.myretailproductsapi')
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MyretailProductsApiFta extends Specification {
 
-    static {
-        System.setProperty('app.config', 'src/main/resources')
-    }
-
-    @Resource
-    RestTemplate restTemplate
-
-    def setup() {
-        new MyretailProductsApiApplication()
-                .configure(new SpringApplicationBuilder(MyretailProductsApiApplication))
-                .run()
-    }
+    @Autowired
+    TestRestTemplate restTemplate
 
     def "get product"() {
         when:
-        String response = restTemplate.getForObject('http://localhost/products/13860428', String)
+        String response = restTemplate.getForObject("/products/${productId}", String)
 
         then:
-        response.status == 200
-        '''{"id":13860428,"name":"The Big Lebowski (Blu-ray)"}'''
+        response == expectedJson
+
+        where:
+        productId  | expectedJson
+        '13860428' | '''{"id":13860428,"name":"The Big Lebowski (Blu-ray)"}'''
+        '15643793' | '''{"id":15643793}'''
+        '16752456' | '''{"id":16752456}'''
+        '16696652' | '''{"id":16696652,"name":"Beats Solo 2 Wireless - Black"}'''
+        '16483589' | '''{"id":16483589}'''
+        '15117729' | '''{"id":15117729}'''
     }
 }

@@ -1,21 +1,19 @@
 package com.tgt.casestudy.myretailproductsapi.service
 
+import com.tgt.casestudy.myretailproductsapi.domain.Product
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import com.tgt.casestudy.myretailproductsapi.domain.Product
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
-
-import javax.annotation.Resource
 
 @Component
 class ProductService {
 
     Logger logger = LogManager.getLogger(getClass())
 
-    @Resource
+    @Autowired
     RestTemplate restTemplate
 
     @Value('${myRetail.productUrl}')

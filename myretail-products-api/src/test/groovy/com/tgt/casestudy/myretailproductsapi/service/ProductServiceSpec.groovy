@@ -1,15 +1,14 @@
 package com.tgt.casestudy.myretailproductsapi.service
 
-import org.apache.logging.log4j.Logger
 import com.tgt.casestudy.myretailproductsapi.domain.Product
+import org.apache.logging.log4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Unroll
-
-import javax.annotation.Resource
 
 class ProductServiceSpec extends Specification {
     RestTemplate mockRestTemplate = Mock()
@@ -20,7 +19,7 @@ class ProductServiceSpec extends Specification {
     def 'spring wiring is correct'() {
         expect:
         ProductService.isAnnotationPresent(Component)
-        ProductService.getDeclaredField('restTemplate').getAnnotation(Resource)
+        ProductService.getDeclaredField('restTemplate').getAnnotation(Autowired)
         ProductService.getDeclaredField('myRetailProductUrl').isAnnotationPresent(Value)
         ProductService.getDeclaredField('myRetailProductUrl').getAnnotation(Value).value() == '${myRetail.productUrl}'
     }

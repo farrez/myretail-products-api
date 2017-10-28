@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+        <RollingFile name="file-info" fileName="${sys:catalina.base}/logs/MyRetailProductsAPI.log" filePattern="${sys:catalina.base}/logs/MyRetailProductsAPI.log.%i">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <Async name="ASYNC">
+            <AppenderRef ref="file-info"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.springframework.context.annotation.ConfigurationClassPostProcessor" level="error"/>
+        <Root level="info">
+            <AppenderRef ref="ASYNC"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
