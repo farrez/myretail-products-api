@@ -16,8 +16,8 @@ Build an application that performs the following actions:
 
 
 TODOs:
-* Add NoSQL pricing call
 * Add FTA's
+* Add NoSQL pricing call
 * Add PUT functionality
 * Provide a README.md file with instructions for testing, running and interacting with your application and any details you feel are relevant to share
 

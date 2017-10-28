@@ -27,3 +27,4 @@ nbdist/
 *.iml
 .mvn
 mvnw*
+.DS_Store
