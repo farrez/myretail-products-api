@@ -9,12 +9,12 @@ import org.springframework.web.client.RestTemplate
 @SpringBootApplication(scanBasePackages = ['com.tgt.casestudy.myretailproductsapi'])
 class MyretailProductsApiApplication extends SpringBootServletInitializer {
 
-	@Bean
-	RestTemplate restTemplate(){
-		return new RestTemplate()
-	}
+    @Bean
+    RestTemplate restTemplate() {
+        return new RestTemplate()
+    }
 
-	static void main(String[] args) {
-		SpringApplication.run MyretailProductsApiApplication, args
-	}
+    static void main(String[] args) {
+        SpringApplication.run MyretailProductsApiApplication, args
+    }
 }

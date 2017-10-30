@@ -16,8 +16,8 @@ class ProductsApiController {
     @Resource
     ProductService productService
 
-    @RequestMapping(method =  GET, path = '/products/{id}')
-    public Product getProduct(@PathVariable int id){
+    @RequestMapping(method = GET, path = '/products/{id}')
+    public Product getProduct(@PathVariable int id) {
         return productService.getProduct(id)
     }
 }

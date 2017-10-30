@@ -1,6 +1,7 @@
 package com.tgt.casestudy.myretailproductsapi.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.Canonical
 
 @Canonical
@@ -8,5 +9,7 @@ import groovy.transform.Canonical
 class Product {
     int id
     String name
+    @JsonProperty('current_price')
+    Price price
 }
 

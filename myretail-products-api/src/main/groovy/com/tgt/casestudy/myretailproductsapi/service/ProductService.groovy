@@ -1,5 +1,6 @@
 package com.tgt.casestudy.myretailproductsapi.service
 
+import com.tgt.casestudy.myretailproductsapi.cassandra.PriceRepository
 import com.tgt.casestudy.myretailproductsapi.domain.Product
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -16,17 +17,23 @@ class ProductService {
     @Autowired
     RestTemplate restTemplate
 
+    @Autowired
+    PriceRepository productRepository
+
     @Value('${myRetail.productUrl}')
     String myRetailProductUrl
 
     Product getProduct(int id) {
+        return new Product(id: id, name: getProductName(id), price: productRepository.getPrice(id))
+    }
+
+    String getProductName(int id) {
         Map myRetailProductData = [:]
         try {
-            myRetailProductData =  restTemplate.getForObject(myRetailProductUrl, Map, [id: id])
+            myRetailProductData = restTemplate.getForObject(myRetailProductUrl, Map, [id: id])
         } catch (Throwable t) {
             logger.warn("Error calling myRetail: '${t.message}'")
         }
-        String name = myRetailProductData.product?.item?.product_description?.title
-        return new Product(id: id, name: name ?: null)
+        return myRetailProductData.product?.item?.product_description?.title ?: null
     }
 }

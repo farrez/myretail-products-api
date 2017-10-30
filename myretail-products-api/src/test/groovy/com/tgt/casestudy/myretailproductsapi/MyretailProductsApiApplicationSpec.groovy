@@ -11,4 +11,12 @@ class MyretailProductsApiApplicationSpec extends Specification {
         MyretailProductsApiApplication.isAnnotationPresent(SpringBootApplication)
         MyretailProductsApiApplication.getDeclaredMethod('restTemplate').isAnnotationPresent(Bean)
     }
+
+    def 'templates built'() {
+        setup:
+        MyretailProductsApiApplication application = new MyretailProductsApiApplication()
+
+        expect:
+        application.restTemplate()
+    }
 }

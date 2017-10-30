@@ -1,5 +1,7 @@
 package com.tgt.casestudy.myretailproductsapi.service
 
+import com.tgt.casestudy.myretailproductsapi.cassandra.PriceRepository
+import com.tgt.casestudy.myretailproductsapi.domain.Price
 import com.tgt.casestudy.myretailproductsapi.domain.Product
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,14 +14,16 @@ import spock.lang.Unroll
 
 class ProductServiceSpec extends Specification {
     RestTemplate mockRestTemplate = Mock()
+    PriceRepository mockProductRepository = Mock()
     Logger mockLogger = Mock()
 
-    ProductService service = new ProductService(restTemplate: mockRestTemplate, myRetailProductUrl: "http://someurl/to/getproduct/{id}", logger: mockLogger)
+    ProductService service = new ProductService(restTemplate: mockRestTemplate, myRetailProductUrl: "http://someurl/to/getproduct/{id}", logger: mockLogger, productRepository: mockProductRepository)
 
     def 'spring wiring is correct'() {
         expect:
         ProductService.isAnnotationPresent(Component)
         ProductService.getDeclaredField('restTemplate').getAnnotation(Autowired)
+        ProductService.getDeclaredField('productRepository').getAnnotation(Autowired)
         ProductService.getDeclaredField('myRetailProductUrl').isAnnotationPresent(Value)
         ProductService.getDeclaredField('myRetailProductUrl').getAnnotation(Value).value() == '${myRetail.productUrl}'
     }
@@ -31,6 +35,7 @@ class ProductServiceSpec extends Specification {
 
         then:
         1 * mockRestTemplate.getForObject("http://someurl/to/getproduct/{id}", Map, [id: 123]) >> myRetailResult
+        1 * mockProductRepository.getPrice(123) >> null
         expectedProduct == result
 
         where:
@@ -41,10 +46,29 @@ class ProductServiceSpec extends Specification {
         new Product(id: 123)                                     | [product: [item: [product_description: null]]]
         new Product(id: 123)                                     | [product: [item: null]]
         new Product(id: 123)                                     | [product: null]
+        new Product(id: 123)                                     | [:]
     }
 
     @Unroll
-    def 'handles myretail client exceptions'(){
+    def 'get product calls product repository for price'() {
+        when:
+        Product result = service.getProduct(123)
+
+        then:
+        1 * mockRestTemplate.getForObject("http://someurl/to/getproduct/{id}", Map, [id: 123]) >> [:]
+        1 * mockProductRepository.getPrice(123) >> price
+        expectedProduct == result
+
+        where:
+        expectedProduct                                                            | price
+        new Product(id: 123, price: new Price(value: 12.99, currency_code: "USD")) | new Price(value: 12.99, currency_code: "USD")
+        new Product(id: 123, price: new Price(value: 12.99))                       | new Price(value: 12.99)
+        new Product(id: 123, price: new Price(currency_code: "USD"))               | new Price(currency_code: "USD")
+        new Product(id: 123)                                                       | null
+    }
+
+    @Unroll
+    def 'handles myretail client exceptions'() {
         when:
         Product result = service.getProduct(123)
 
@@ -55,6 +79,6 @@ class ProductServiceSpec extends Specification {
         new Product(id: 123) == result
 
         where:
-        exception << [new RestClientException("This is the message..."), new RuntimeException("This is the message...") ]
+        exception << [new RestClientException("This is the message..."), new RuntimeException("This is the message...")]
     }
 }
