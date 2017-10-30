@@ -2,8 +2,6 @@ package com.tgt.casestudy.myretailproductsapi.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.data.cassandra.mapping.PrimaryKey
-import org.springframework.data.cassandra.mapping.Table
 import spock.lang.Specification
 
 class ProductSpec extends Specification {
