@@ -61,9 +61,9 @@ class ProductServiceSpec extends Specification {
 
         where:
         expectedProduct                                                            | price
-        new Product(id: 123, price: new Price(value: 12.99, currency_code: "USD")) | new Price(value: 12.99, currency_code: "USD")
+        new Product(id: 123, price: new Price(value: 12.99, currencyCode: "USD")) | new Price(value: 12.99, currencyCode: "USD")
         new Product(id: 123, price: new Price(value: 12.99))                       | new Price(value: 12.99)
-        new Product(id: 123, price: new Price(currency_code: "USD"))               | new Price(currency_code: "USD")
+        new Product(id: 123, price: new Price(currencyCode: "USD"))               | new Price(currencyCode: "USD")
         new Product(id: 123)                                                       | null
     }
 
