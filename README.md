@@ -22,12 +22,19 @@ cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, curren
 cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (16752456, 17.99, 'USD');
 cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (15643793, 18.99, 'USD');
 
-### Build the Project with Tests Running
+### Build the Project and execute unit and functional tests
 ```
 mvn clean install
 ```
 
-### Run Tests Directly
+### Run the app
+Change directories to the myretail-products-api directory of the project (~/workspaces/myretail-products-api/myretail-products-api)
 ```
-mvn test
+mvn spring-boot:run
 ```
+
+### See the application work:
+* http://localhost:8080/products/{i} from a browser
+
+### curl commands for updating price:
+curl -H "Content-Type: application/json" -X PUT -d '{"id":16696652,"name":"Beats Solo 2 Wireless - Black","current_price":{"value":9.99,"currency_code":"USD"}}' http://localhost:8080/products/16696652
