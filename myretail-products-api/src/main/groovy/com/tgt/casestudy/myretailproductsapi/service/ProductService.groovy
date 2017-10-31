@@ -1,6 +1,7 @@
 package com.tgt.casestudy.myretailproductsapi.service
 
 import com.tgt.casestudy.myretailproductsapi.cassandra.PriceRepository
+import com.tgt.casestudy.myretailproductsapi.domain.Price
 import com.tgt.casestudy.myretailproductsapi.domain.Product
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -35,5 +36,9 @@ class ProductService {
             logger.warn("Error calling myRetail: '${t.message}'")
         }
         return myRetailProductData.product?.item?.product_description?.title ?: null
+    }
+
+    void saveProductPrice(Price price) {
+        productRepository.save(price)
     }
 }

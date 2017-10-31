@@ -10,6 +10,6 @@ class PriceRepositorySpec extends Specification {
         expect:
         PriceRepository in CrudRepository
         PriceRepository.getDeclaredMethod('getPrice', int).isAnnotationPresent(Query)
-        PriceRepository.getDeclaredMethod('getPrice', int).getAnnotation(Query).value() == 'select value, currency_code from tgt_casestudy_pricing.product_price where product_id=?0'
+        PriceRepository.getDeclaredMethod('getPrice', int).getAnnotation(Query).value() == 'select value, currency_code from product_price where product_id=?0'
     }
 }

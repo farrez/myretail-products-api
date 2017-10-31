@@ -60,11 +60,11 @@ class ProductServiceSpec extends Specification {
         expectedProduct == result
 
         where:
-        expectedProduct                                                            | price
+        expectedProduct                                                           | price
         new Product(id: 123, price: new Price(value: 12.99, currencyCode: "USD")) | new Price(value: 12.99, currencyCode: "USD")
-        new Product(id: 123, price: new Price(value: 12.99))                       | new Price(value: 12.99)
+        new Product(id: 123, price: new Price(value: 12.99))                      | new Price(value: 12.99)
         new Product(id: 123, price: new Price(currencyCode: "USD"))               | new Price(currencyCode: "USD")
-        new Product(id: 123)                                                       | null
+        new Product(id: 123)                                                      | null
     }
 
     @Unroll
@@ -80,5 +80,15 @@ class ProductServiceSpec extends Specification {
 
         where:
         exception << [new RestClientException("This is the message..."), new RuntimeException("This is the message...")]
+    }
+
+    def 'save product price'() {
+        setup:
+        Price price = new Price(value: 5.99, currencyCode: 'USD')
+        when:
+        service.saveProductPrice(price)
+
+        then:
+        1 * mockProductRepository.save(price)
     }
 }
