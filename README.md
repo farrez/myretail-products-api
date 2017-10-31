@@ -34,7 +34,7 @@ mvn spring-boot:run
 ```
 
 ### See the application work:
-* http://localhost:8080/products/{i} from a browser
+* http://localhost:8080/products/{id} from a browser
 
 ### curl commands for updating price:
 curl -H "Content-Type: application/json" -X PUT -d '{"id":16696652,"name":"Beats Solo 2 Wireless - Black","current_price":{"value":9.99,"currency_code":"USD"}}' http://localhost:8080/products/16696652
