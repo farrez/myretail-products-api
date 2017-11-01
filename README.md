@@ -1,40 +1,34 @@
-## myRetail Products API
+# myRetail Products API - Shane Farrell
 
-### Setup
-To run the project, need to have Cassandra running with data pre-populated.  I chose to do this via docker.
+## Prerequisites
+* Maven
+* docker (https://www.docker.com/get-docker)
 
-### Install Cassandra via docker:
-* download the Cassandra docker file
-#### Run docker
-docker run -it --rm --name cassandra-node1 -p7000:7000 -p7001:7001 -p9042:9042 -p9160:9160 cassandra
+## Overview
+This project shows a working solution to the "myRetail RESTful service" case study.  It includes functional tests that are executed when building the application, so it requires a docker container running Cassandra (with pre-populated price data).  
 
-### Cassandra setup
-Start a cql session via docker and execute the setup commands:
-docker run -it --rm -e CQLSH_HOST=$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' cassandra-node1) --name cassandra-client --entrypoint=cqlsh cassandra
+### Setup the Docker Container running Cassandra
+You can use the setup-scripts/setup.sh script to start the required docker cassandra container. 
+```
+./setup-scripts/setup.sh
+```
 
-cqlsh> CREATE KEYSPACE IF NOT EXISTS tgt_casestudy_pricing WITh replication = {'class':'SimpleStrategy','replication_factor' : 2};
-cqlsh> use tgt_casestudy_pricing;
-cqlsh:tgt_casestudy_pricing>CREATE TABLE IF NOT EXISTS product_price (product_id int primary key, value double, currency_code varchar);
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (13860428, 13.49, 'USD');
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (15117729, 14.99, 'USD');
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (16483589, 15.99, 'USD');
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (16696652, 16.99, 'USD');
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (16752456, 17.99, 'USD');
-cqlsh:tgt_casestudy_pricing>INSERT INTO product_price (product_id, value, currency_code) values (15643793, 18.99, 'USD');
-
-### Build the Project and execute unit and functional tests
+### Building the project 
+You can use standard Maven build commands to build the application (which also executes both unit and functional test).
 ```
 mvn clean install
 ```
-
 ### Run the app
-Change directories to the myretail-products-api directory of the project (~/workspaces/myretail-products-api/myretail-products-api)
+Once the application has been built you can also run it using the spring boot run command for Maven.  Since the project is setup with submodules, you need to make sure to specify the module with the main application class. 
+From the main project myretail-products-api directory:
 ```
-mvn spring-boot:run
+mvn -pl myretail-products-api spring-boot:run
 ```
-
 ### See the application work:
-* http://localhost:8080/products/{id} from a browser
+When the application is running any GET request to http://localhost:8080/products/{id} where {id} is the product id should return data showing the name sourced from the given redsky endpoint and price data from the Cassandra datastore.
 
-### curl commands for updating price:
-curl -H "Content-Type: application/json" -X PUT -d '{"id":16696652,"name":"Beats Solo 2 Wireless - Black","current_price":{"value":9.99,"currency_code":"USD"}}' http://localhost:8080/products/16696652
+### Updating price data:
+The application has an endpoint that allows for pricing updates via PUT method.  Here is an example on how to update the price of product id 16696652 with a value of 9.99 and currency code of CAD. 
+```
+curl -H "Content-Type: application/json" -X PUT -d '{"id":16696652,"name":"Beats Solo 2 Wireless - Black","current_price":{"value":9.99,"currency_code":"CAD"}}' http://localhost:8080/products/16696652
+```
