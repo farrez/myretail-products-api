@@ -7,7 +7,7 @@
 * docker (https://www.docker.com/get-docker)
 
 ## Overview
-This project shows a working solution to the "myRetail RESTful service" case study.  It includes functional tests that are executed when building the application, so it requires a docker container running Cassandra (with pre-populated price data).  
+This project shows a working solution to the "myRetail RESTful service" case study including the bonus PUT endpoint to update price data.  It includes functional tests that are executed when building the application, so it requires a docker container running Cassandra (with pre-populated price data).  
 
 ### Setup the Docker Container running Cassandra
 You can run the setup-scripts/setup.sh script (from the main project directory) to start the required docker cassandra container and populate the datastore with price data.  This script will start a cassandra docker container in the background named 'tgt-case-study-cassandra'.
