@@ -2,6 +2,8 @@
 
 ## Prerequisites
 * Maven
+* Java 8
+* Groovy
 * docker (https://www.docker.com/get-docker)
 
 ## Overview
