@@ -8,9 +8,14 @@
 This project shows a working solution to the "myRetail RESTful service" case study.  It includes functional tests that are executed when building the application, so it requires a docker container running Cassandra (with pre-populated price data).  
 
 ### Setup the Docker Container running Cassandra
-You can run the setup-scripts/setup.sh script (from the main project directory) to start the required docker cassandra container. 
+You can run the setup-scripts/setup.sh script (from the main project directory) to start the required docker cassandra container and populate the datastore with price data.  This script will start a cassandra docker container in the background named 'tgt-case-study-cassandra'.
 ```
 ./setup-scripts/setup.sh
+```
+Once you are done running/testing the application you should kill and remove the docker container.
+```
+docker kill tgt-case-study-cassandra
+docker rm tgt-case-study-cassandra
 ```
 
 ### Building the project 
@@ -32,3 +37,12 @@ The application has an endpoint that allows for pricing updates via PUT method. 
 ```
 curl -H "Content-Type: application/json" -X PUT -d '{"id":16696652,"name":"Beats Solo 2 Wireless - Black","current_price":{"value":9.99,"currency_code":"CAD"}}' http://localhost:8080/products/16696652
 ```
+### Versions
+The following versions were used:
+* java version "1.8.0_111"
+* Groovy Version: 2.4.7
+* Apache Maven 3.5.0
+* docker Client Version: 17.09.0-ce
+* docker Client API version:  1.32
+* docker Server Version: 17.09.0-ce
+* docker Server API version:  1.32 (minimum version 1.12)
