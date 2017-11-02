@@ -8,7 +8,7 @@
 This project shows a working solution to the "myRetail RESTful service" case study.  It includes functional tests that are executed when building the application, so it requires a docker container running Cassandra (with pre-populated price data).  
 
 ### Setup the Docker Container running Cassandra
-You can use the setup-scripts/setup.sh script to start the required docker cassandra container. 
+You can run the setup-scripts/setup.sh script (from the main project directory) to start the required docker cassandra container. 
 ```
 ./setup-scripts/setup.sh
 ```
